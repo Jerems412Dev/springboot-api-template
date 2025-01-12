@@ -18,9 +18,9 @@ public class LoanValidator {
 
 
     /**
-     * Valide le DTO de la loan.
+     * Valid loan DTO.
      *
-     * @param loanDTO Le DTO de la loan.
+     * @param loanDTO loan DTO.
      */
     public void validateLoanDTO(LoanDTO loanDTO) {
         if (loanDTO == null) {

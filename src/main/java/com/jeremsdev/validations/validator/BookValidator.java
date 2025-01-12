@@ -14,9 +14,9 @@ public class BookValidator {
     }
 
     /**
-     * Valide le DTO de la book.
+     * Valid book DTO.
      *
-     * @param bookDTO Le DTO de la book.
+     * @param bookDTO book DTO.
      */
     public void validateBookDTO(BookDTO bookDTO) {
         if (bookDTO == null) {
