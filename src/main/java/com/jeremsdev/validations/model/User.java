@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
 @Data
 @NoArgsConstructor@AllArgsConstructor
@@ -13,5 +15,19 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idUser;
+    private Long idUser;
+    @Column(nullable = false, length = 80)
+    private String name;
+    @Column(nullable = false, length = 80, unique = true)
+    private String email;
+    @Column(nullable = false, length = 80, unique = true)
+    private String phoneNumber;
+    @Column(nullable = false)
+    private  String password;
+
+    //relations
+
+    @OneToMany
+    @JoinColumn(name = "loan_id")
+    private Set<Loan> loans;
 }
