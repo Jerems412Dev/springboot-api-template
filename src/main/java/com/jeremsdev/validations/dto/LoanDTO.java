@@ -11,15 +11,10 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoanDTO {
-    @NonNull
     private Long idLoan;
-    @NonNull
     private Date loanDate;
-    @NonNull
     private Date returnDate;
     private boolean state;
-    @NonNull
     private Long idUser;
-    @NonNull
     private Long idBook;
 }

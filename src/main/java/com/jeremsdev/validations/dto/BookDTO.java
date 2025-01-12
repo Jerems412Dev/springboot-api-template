@@ -13,15 +13,11 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 public class BookDTO {
-    @NonNull
     private Long idBook;
-    @NonNull
     private String title;
-    @NonNull
     private String author;
     private int availableCopies;
     private int countPages;
-    @NonNull
     private Categories category;
     private Set<LoanDTO> loans;
 }

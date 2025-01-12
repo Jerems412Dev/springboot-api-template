@@ -11,7 +11,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-    @NonNull
     private Long idUser;
     @NonNull
     private String name;
