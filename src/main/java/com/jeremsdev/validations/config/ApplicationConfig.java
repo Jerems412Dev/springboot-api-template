@@ -1,6 +1,7 @@
 package com.jeremsdev.validations.config;
 
 //import com.jeremsdev.validations.repository.UserRepository;
+import com.jeremsdev.validations.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +28,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-  /*private final UserRepository repository;
+  private final UserRepository repository;
 
   @Bean
   public UserDetailsService userDetailsService() {
@@ -75,6 +76,6 @@ public class ApplicationConfig {
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
-  }*/
+  }
 
 }
