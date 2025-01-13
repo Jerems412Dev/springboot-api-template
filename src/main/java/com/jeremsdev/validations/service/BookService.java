@@ -9,7 +9,7 @@ public interface BookService {
     BookDTO add(BookDTO bookDTO);
     BookDTO update(Long idBook, BookDTO bookDTO);
     BookDTO getById(Long idBook);
-    List<BookDTO> findAll(Long idBook);
+    List<BookDTO> findAll();
     void delete(Long idBook);
     List<LoanDTO> getLoans(Long idBook);
     BookDTO updateAvailableCopies(int nb, Long idBook);

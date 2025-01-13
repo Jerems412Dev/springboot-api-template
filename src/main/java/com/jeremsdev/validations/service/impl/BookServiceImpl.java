@@ -79,7 +79,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDTO> findAll(Long idBook) {
+    public List<BookDTO> findAll() {
         logger.info("Retrieving all books");
 
         List<Book> books = bookRepository.findAll();
