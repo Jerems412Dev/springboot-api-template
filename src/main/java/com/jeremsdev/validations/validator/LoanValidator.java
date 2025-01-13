@@ -74,7 +74,7 @@ public class LoanValidator {
      * @param idUser id of user.
      */
     private void validateUniqueIdUser(Long idUser) {
-        if (userRepository.existsUserByIdUser(idUser)) {
+        if (userRepository.existsByIdUser(idUser)) {
             throw new ValidationException("User with this id doesn't exists");
         }
     }

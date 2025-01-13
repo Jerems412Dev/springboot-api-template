@@ -9,7 +9,7 @@ public interface UserService {
     UserDTO add(UserDTO userDTO);
     UserDTO update(Long idUser, UserDTO userDTO);
     UserDTO getById(Long idUser);
-    List<UserDTO> findAll(Long idUser);
+    List<UserDTO> findAll();
     void delete(Long idUser);
     List<LoanDTO> getLoans(Long idUser);
 }

@@ -12,5 +12,5 @@ public interface BookService {
     List<BookDTO> findAll(Long idBook);
     void delete(Long idBook);
     List<LoanDTO> getLoans(Long idBook);
-    void updateAvailableCopies(int nb);
+    BookDTO updateAvailableCopies(int nb, Long idBook);
 }

@@ -9,8 +9,6 @@ public interface LoanService {
     LoanDTO add(LoanDTO loanDTO);
     LoanDTO update(Long idLoan, LoanDTO loanDTO);
     LoanDTO getById(Long idLoan);
-    List<LoanDTO> findAll(Long idLoan);
+    List<LoanDTO> findAll();
     void delete(Long idLoan);
-    List<LoanDTO> getLoans(Long idLoan);
-    List<UserDTO> getUsers(Long idUser);
 }

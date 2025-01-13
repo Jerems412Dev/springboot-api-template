@@ -19,5 +19,4 @@ public class BookDTO {
     private int availableCopies;
     private int countPages;
     private Categories category;
-    private Set<LoanDTO> loans;
 }

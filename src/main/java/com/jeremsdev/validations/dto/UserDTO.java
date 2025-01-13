@@ -18,5 +18,4 @@ public class UserDTO {
     private String email;
     @NonNull
     private String phoneNumber;
-    private Set<LoanDTO> loans;
 }
