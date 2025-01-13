@@ -14,5 +14,8 @@ public interface UserMapper {
     UserDTO toDTO(User user);
     @Mapping(target = "password", ignore = true)
     User toEntity(UserDTO userDTO);
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "loans", ignore = true)
+    @Mapping(target = "authorities", ignore = true)
     void updateEntityFromDTO(UserDTO userDTO, @MappingTarget User user);
 }

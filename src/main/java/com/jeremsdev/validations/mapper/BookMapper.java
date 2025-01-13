@@ -13,8 +13,9 @@ import org.mapstruct.factory.Mappers;
 public interface BookMapper {
     BookMapper INSTANCE =  Mappers.getMapper(BookMapper.class);
 
-    @Mapping(target = "", source = "")
     BookDTO toDTO(Book book);
+    @Mapping(target = "loans", ignore = true)
     Book toEntity(BookDTO bookDTO);
+    @Mapping(target = "loans", ignore = true)
     void updateEntityFromDTO(BookDTO bookDTO, @MappingTarget Book book);
 }

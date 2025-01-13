@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Propriétés -->
+    <property name="LOG_EXCEPTION_CONVERSION_WORD" value="%xEx"/>
+    <property name="LOG_PATTERN_LEVEL" value="%-5level [validations,%X{traceId},%X{spanId}]"/>
+    <property name="LOG_DATEFORMAT_PATTERN" value="yyyy-MM-dd HH:mm:ss.SSS"/>
+    <property name="LOG_PATTERN"
+              value="%d{${LOG_DATEFORMAT_PATTERN}} ${LOG_PATTERN_LEVEL} %X{pid} --- [%15.15t] %-40.40c{1} : %m%n${LOG_EXCEPTION_CONVERSION_WORD}"/>
+
+    <!-- Console Appender -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- File Appender -->
+    <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/logs.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/logs.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+
+    <!-- Loggers -->
+    <logger name="com.jeremsdev.validations.controller" level="DEBUG" additivity="false">
+        <appender-ref ref="Console_JSON"/>
+    </logger>
+
+    <logger name="com.jeremsdev.validations.service" level="DEBUG" additivity="false">
+        <appender-ref ref="Console_JSON"/>
+    </logger>
+
+    <!-- Root Logger -->
+    <root level="INFO">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="File"/>
+    </root>
+</configuration>
