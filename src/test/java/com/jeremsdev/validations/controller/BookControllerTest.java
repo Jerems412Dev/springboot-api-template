@@ -16,7 +16,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -40,42 +39,43 @@ public class BookControllerTest {
     private ObjectMapper objectMapper;
     private BookDTO book1;
     private BookDTO book2;
-    private LoanDTO loan1;
-    private LoanDTO loan2;
+    private BookDTO book2Updated;
+    private BookDTO bookUpdatedAvailable;
 
     @BeforeEach
     void init() {
         book1 = new BookDTO();
-        book1.setTitle("The Great Gatsby");
-        book1.setAuthor("F. Scott Fitzgerald");
-        book1.setAvailableCopies(3);
+        book1.setTitle("book 1");
+        book1.setAuthor("Author book 1");
+        book1.setAvailableCopies(10);
         book1.setCountPages(218);
         book1.setCategory(Categories.ROMAN);
 
         book2 = new BookDTO();
-        book2.setTitle("Clean Code");
-        book2.setAuthor("Robert C. Martin");
-        book2.setAvailableCopies(3);
-        book2.setCountPages(464);
-        book2.setCategory(Categories.MYSTERY);
+        book2.setTitle("book 2");
+        book2.setAuthor("Author book 2");
+        book2.setAvailableCopies(15);
+        book2.setCountPages(400);
+        book2.setCategory(Categories.HORROR);
 
-        loan1 = new LoanDTO();
-        loan1.setLoanDate(new Date()); // actual Date
-        loan1.setReturnDate(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)); // Return in 7 days
-        loan1.setState(true); // Example : active loan
-        loan1.setIdBook(1L);
-        loan1.setIdUser(1L);
+        book2Updated = new BookDTO();
+        book2Updated.setIdBook(2L);
+        book2Updated.setTitle("book updated");
+        book2Updated.setAuthor("Author book updated");
+        book2Updated.setAvailableCopies(10);
+        book2Updated.setCountPages(200);
+        book2Updated.setCategory(Categories.HORROR);
 
-        loan2 = new LoanDTO();
-        loan2.setLoanDate(new Date(System.currentTimeMillis() - 14 * 24 * 60 * 60 * 1000)); // loan add 14 days ago
-        loan2.setReturnDate(new Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000)); // return 7 days ago
-        loan2.setState(false); // Example : loan ended
-        loan2.setIdBook(1L);
-        loan2.setIdUser(1L);
+        bookUpdatedAvailable = new BookDTO();
+        bookUpdatedAvailable.setTitle("book 1");
+        bookUpdatedAvailable.setAuthor("Author book 1");
+        bookUpdatedAvailable.setAvailableCopies(15);
+        bookUpdatedAvailable.setCountPages(218);
+        bookUpdatedAvailable.setCategory(Categories.ROMAN);
     }
 
     @Test
-    void shouldAddNewBook() throws Exception {
+    void shouldAddNewBookOne() throws Exception {
         when(bookService.add(any(BookDTO.class))).thenReturn(book1);
 
         this.mockMvc.perform(post("/book/add")
@@ -90,19 +90,34 @@ public class BookControllerTest {
     }
 
     @Test
+    void shouldAddNewBookTwo() throws Exception {
+        when(bookService.add(any(BookDTO.class))).thenReturn(book2);
+
+        this.mockMvc.perform(post("/book/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(book2)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.title", is(book2.getTitle())))
+                .andExpect(jsonPath("$.author", is(book2.getAuthor())))
+                .andExpect(jsonPath("$.availableCopies", is(book2.getAvailableCopies())))
+                .andExpect(jsonPath("$.countPages", is(book2.getCountPages())))
+                .andExpect(jsonPath("$.category", is(book2.getCategory().toString())));
+    }
+
+    @Test
     void shouldUpdateBook() throws Exception {
 
-        when(bookService.update(anyLong(), any(BookDTO.class))).thenReturn(book1);
+        when(bookService.update(anyLong(), any(BookDTO.class))).thenReturn(book2Updated);
 
-        this.mockMvc.perform(put("/book/update/{idBook}", 1L)
+        this.mockMvc.perform(put("/book/update/{idBook}", 2L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(book1)))
+                        .content(objectMapper.writeValueAsString(book2Updated)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title", is(book1.getTitle())))
-                .andExpect(jsonPath("$.author", is(book1.getAuthor())))
-                .andExpect(jsonPath("$.availableCopies", is(book1.getAvailableCopies())))
-                .andExpect(jsonPath("$.countPages", is(book1.getCountPages())))
-                .andExpect(jsonPath("$.category", is(book1.getCategory().toString())));
+                .andExpect(jsonPath("$.title", is(book2Updated.getTitle())))
+                .andExpect(jsonPath("$.author", is(book2Updated.getAuthor())))
+                .andExpect(jsonPath("$.availableCopies", is(book2Updated.getAvailableCopies())))
+                .andExpect(jsonPath("$.countPages", is(book2Updated.getCountPages())))
+                .andExpect(jsonPath("$.category", is(book2Updated.getCategory().toString())));
 
     }
 
@@ -125,7 +140,7 @@ public class BookControllerTest {
 
         List<BookDTO> list = new ArrayList<>();
         list.add(book1);
-        list.add(book2);
+        list.add(book2Updated);
 
         when(bookService.findAll()).thenReturn(list);
 
@@ -135,7 +150,7 @@ public class BookControllerTest {
     }
 
     @Test
-    void shouldDeleteBook() throws Exception {
+    void shouldDeleteBookTwo() throws Exception {
 
         doNothing().when(bookService).delete(anyLong());
 
@@ -144,33 +159,32 @@ public class BookControllerTest {
     }
 
     @Test
-    void shouldFetchLoansByIdBook() throws Exception {
+    void shouldFetchLoansByIdBookOne() throws Exception {
 
         List<LoanDTO> list = new ArrayList<>();
-        list.add(loan1);
-        list.add(loan2);
+
 
         when(bookService.getLoans(anyLong())).thenReturn(list);
 
-        this.mockMvc.perform(get("/book/getloans/{idBook}"))
-                .andExpect(status().isOk())
+        this.mockMvc.perform(get("/book/getloans/{idBook}",1L))
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.size()", is(list.size())));
     }
 
     @Test
-    void shouldUpdateAvailableCopiesBook() throws Exception {
+    void shouldUpdateAvailableCopiesBookOne() throws Exception {
 
-        when(bookService.updateAvailableCopies(anyInt(),anyLong())).thenReturn(book1);
+        when(bookService.updateAvailableCopies(anyInt(),anyLong())).thenReturn(bookUpdatedAvailable);
 
-        this.mockMvc.perform(put("/book/updateavailablecopies/{idBook}/{nb}", 1L,-10)
+        this.mockMvc.perform(put("/book/updateavailablecopies/{idBook}/{nb}", 1L,5)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(book1)))
+                        .content(objectMapper.writeValueAsString(bookUpdatedAvailable)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title", is(book1.getTitle())))
-                .andExpect(jsonPath("$.author", is(book1.getAuthor())))
-                .andExpect(jsonPath("$.availableCopies", is(book1.getAvailableCopies())))
-                .andExpect(jsonPath("$.countPages", is(book1.getCountPages())))
-                .andExpect(jsonPath("$.category", is(book1.getCategory().toString())));
+                .andExpect(jsonPath("$.title", is(bookUpdatedAvailable.getTitle())))
+                .andExpect(jsonPath("$.author", is(bookUpdatedAvailable.getAuthor())))
+                .andExpect(jsonPath("$.availableCopies", is(bookUpdatedAvailable.getAvailableCopies())))
+                .andExpect(jsonPath("$.countPages", is(bookUpdatedAvailable.getCountPages())))
+                .andExpect(jsonPath("$.category", is(bookUpdatedAvailable.getCategory().toString())));
 
     }
 }
