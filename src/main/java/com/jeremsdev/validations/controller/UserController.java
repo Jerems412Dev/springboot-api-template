@@ -34,7 +34,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{idUser}")
+    @PutMapping("/update/{idUser}")
     public ResponseEntity<UserDTO> update(@PathVariable Long idUser, @RequestBody UserDTO userDTO) {
         logger.info("Received request to update User with ID: {}", idUser);
         try {
@@ -90,7 +90,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getloan/{idUser}")
+    @GetMapping("/getloans/{idUser}")
     public ResponseEntity<List<LoanDTO>> getLoans(@PathVariable Long idUser) {
         logger.info("Received request to retrieve Loan with idUser: {}", idUser);
         try {

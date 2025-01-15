@@ -27,7 +27,7 @@ public class BookValidator {
             throw new ValidationException("Category cannot be null");
         }
 
-        validateRequiredField(bookDTO.getAuthor(),"Author");
+        validateRequiredField(bookDTO.getAuthor());
         validateUniqueTitle(bookDTO.getTitle());
         validateNumber(bookDTO.getAvailableCopies());
         validateNumber(bookDTO.getCountPages());
@@ -37,11 +37,10 @@ public class BookValidator {
      * Checks whether a field is not null and not empty.
      *
      * @param field     the field to be checked.
-     * @param fieldName Name field.
      */
-    private void validateRequiredField(String field, String fieldName) {
+    private void validateRequiredField(String field) {
         if (field == null || field.isBlank()) {
-            throw new ValidationException(fieldName + " cannot be null or empty");
+            throw new ValidationException("Author cannot be null or empty");
         }
     }
 

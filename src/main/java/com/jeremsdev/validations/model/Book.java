@@ -24,7 +24,6 @@ public class Book {
     @Column(nullable = false)
     private int countPages;
     @Column(nullable = false)
-    @Embedded
     private Categories category;
 
     //relations

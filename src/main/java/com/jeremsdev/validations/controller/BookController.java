@@ -21,7 +21,7 @@ public class BookController {
     private static final Logger logger = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<BookDTO> add(@RequestBody BookDTO bookDTO) {
         logger.info("Received request to add a new Book: {}", bookDTO);
         try {

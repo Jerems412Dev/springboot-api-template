@@ -20,7 +20,7 @@ public class LoanController {
     private static final Logger logger = LoggerFactory.getLogger(LoanController.class);
     private final LoanService loanService;
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<LoanDTO> add(@RequestBody LoanDTO loanDTO) {
         logger.info("Received request to add a new Loan: {}", loanDTO);
         try {
@@ -33,7 +33,7 @@ public class LoanController {
         }
     }
 
-    @PutMapping("/{idLoan}")
+    @PutMapping("/update/{idLoan}")
     public ResponseEntity<LoanDTO> update(@PathVariable Long idLoan, @RequestBody LoanDTO loanDTO) {
         logger.info("Received request to update Loan with ID: {}", idLoan);
         try {

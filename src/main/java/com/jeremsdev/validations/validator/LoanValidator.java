@@ -51,10 +51,6 @@ public class LoanValidator {
                 throw new ValidationException(fieldName + " cannot be null or empty");
             }
         }
-
-        if (field instanceof Number) {
-            throw new ValidationException("Cannot be < zero !");
-        }
     }
 
     /**
@@ -63,7 +59,7 @@ public class LoanValidator {
      * @param idBook id of book.
      */
     private void validateUniqueIdBook(Long idBook) {
-        if (bookRepository.existsUserByIdBook(idBook)) {
+        if (!bookRepository.existsUserByIdBook(idBook)) {
             throw new ValidationException("Book with this id  doesn't exists");
         }
     }
@@ -74,7 +70,7 @@ public class LoanValidator {
      * @param idUser id of user.
      */
     private void validateUniqueIdUser(Long idUser) {
-        if (userRepository.existsByIdUser(idUser)) {
+        if (!userRepository.existsByIdUser(idUser)) {
             throw new ValidationException("User with this id doesn't exists");
         }
     }

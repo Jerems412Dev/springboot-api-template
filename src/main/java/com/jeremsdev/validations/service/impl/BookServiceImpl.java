@@ -3,6 +3,7 @@ package com.jeremsdev.validations.service.impl;
 import com.jeremsdev.validations.dto.BookDTO;
 import com.jeremsdev.validations.dto.LoanDTO;
 import com.jeremsdev.validations.exception.ResourceNotFoundException;
+import com.jeremsdev.validations.exception.ValidationException;
 import com.jeremsdev.validations.mapper.BookMapper;
 import com.jeremsdev.validations.mapper.LoanMapper;
 import com.jeremsdev.validations.model.Book;
@@ -134,7 +135,11 @@ public class BookServiceImpl implements BookService {
                     logBookNotFound(idBook);
                     return new ResourceNotFoundException("Book with ID: " + idBook + " not found");
                 });
+
         book.setAvailableCopies(book.getAvailableCopies() + nb);
+        if(book.getAvailableCopies() < 0) {
+            return null;
+        }
 
         logger.info("Available copies updated for book with title : {}", book.getTitle());
         return bookMapper.toDTO(bookRepository.save(book));

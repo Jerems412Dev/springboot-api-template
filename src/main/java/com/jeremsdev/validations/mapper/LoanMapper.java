@@ -15,22 +15,19 @@ import org.mapstruct.factory.Mappers;
 public interface LoanMapper {
     LoanMapper INSTANCE = Mappers.getMapper(LoanMapper.class);
 
-    // Conversion Loan -> LoanDTO
     @Mapping(target = "idBook", source = "book.idBook")
     @Mapping(target = "idUser", source = "user.idUser")
     LoanDTO toDTO(Loan loan);
 
-    // Conversion LoanDTO -> Loan
     @Mapping(target = "book", source = "idBook", qualifiedByName = "mapIdToBook")
     @Mapping(target = "user", source = "idUser", qualifiedByName = "mapIdToUser")
     Loan toEntity(LoanDTO loanDTO);
 
-    // Mise à jour d'une entité existante avec les données du DTO
+    @Mapping(target = "idLoan", ignore = true)
     @Mapping(target = "book", source = "idBook", qualifiedByName = "mapIdToBook")
     @Mapping(target = "user", source = "idUser", qualifiedByName = "mapIdToUser")
     void updateEntityFromDTO(LoanDTO loanDTO, @MappingTarget Loan loan);
 
-    // Méthodes utilitaires pour mapper les relations
     @Named("mapIdToBook")
     default Book mapIdToBook(Long idBook) {
         if (idBook == null) return null;

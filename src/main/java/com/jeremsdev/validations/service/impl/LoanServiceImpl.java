@@ -5,6 +5,7 @@ import com.jeremsdev.validations.exception.ResourceNotFoundException;
 import com.jeremsdev.validations.mapper.LoanMapper;
 import com.jeremsdev.validations.model.Loan;
 import com.jeremsdev.validations.repository.LoanRepository;
+import com.jeremsdev.validations.service.BookService;
 import com.jeremsdev.validations.service.LoanService;
 import com.jeremsdev.validations.validator.LoanValidator;
 import org.slf4j.Logger;
@@ -20,11 +21,13 @@ public class LoanServiceImpl implements LoanService {
     private final LoanValidator loanValidator;
     private final LoanRepository loanRepository;
     private final LoanMapper loanMapper;
+    private final BookService bookService;
 
-    public LoanServiceImpl(LoanValidator loanValidator, LoanRepository loanRepository, LoanMapper loanMapper) {
+    public LoanServiceImpl(LoanValidator loanValidator, LoanRepository loanRepository, LoanMapper loanMapper, BookService bookService) {
         this.loanValidator = loanValidator;
         this.loanRepository = loanRepository;
         this.loanMapper = loanMapper.INSTANCE;
+        this.bookService = bookService;
     }
 
     @Override
@@ -32,6 +35,10 @@ public class LoanServiceImpl implements LoanService {
         logger.info("Adding a new loan");
 
         loanValidator.validateLoanDTO(loanDTO);
+        if(bookService.updateAvailableCopies(-1,loanDTO.getIdBook()) == null) {
+            logger.error("Cannot add loan because book with ID: {} have not available copy.", loanDTO.getIdBook());
+            return null;
+        }
 
         Loan loan = loanMapper.toEntity(loanDTO);
         loan = loanRepository.save(loan);
@@ -50,6 +57,10 @@ public class LoanServiceImpl implements LoanService {
                     logLoanNotFound(idLoan);
                     return new ResourceNotFoundException("Loan with ID: " + idLoan + " not found");
                 });
+
+        if (loan.isState() != loanDTO.isState() && !loanDTO.isState()) {
+            bookService.updateAvailableCopies(1,loanDTO.getIdBook());
+        }
 
         loanMapper.updateEntityFromDTO(loanDTO, loan);
 
@@ -96,7 +107,9 @@ public class LoanServiceImpl implements LoanService {
             logLoanNotFound(idLoan);
             throw new ResourceNotFoundException("Loan with ID: " + idLoan + " not found");
         }
-
+        if(getById(idLoan).isState()) {
+            bookService.updateAvailableCopies(1,getById(idLoan).getIdBook());
+        }
         loanRepository.deleteById(idLoan);
         logger.info("Loan with ID: {} deleted successfully", idLoan);
     }
