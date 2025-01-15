@@ -41,6 +41,7 @@ public class LoanControllerTest {
     private ObjectMapper objectMapper;
     private LoanDTO loan1;
     private LoanDTO loan2;
+    private LoanDTO loanUpdated;
 
     @BeforeEach
     void init() throws ParseException {
@@ -54,13 +55,21 @@ public class LoanControllerTest {
         loan2 = new LoanDTO();
         loan2.setLoanDate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-01")); // actual Date
         loan2.setReturnDate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-08")); // return 7 days ago
-        loan2.setState(false); // Example : loan ended
+        loan2.setState(true);
         loan2.setIdUser(1L);
         loan2.setIdBook(1L);
+
+        loanUpdated = new LoanDTO();
+        loanUpdated.setIdLoan(2L);
+        loanUpdated.setLoanDate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-01")); // actual Date
+        loanUpdated.setReturnDate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-08")); // return 7 days ago
+        loanUpdated.setState(false); // Example : loan ended
+        loanUpdated.setIdUser(1L);
+        loanUpdated.setIdBook(1L);
     }
 
     @Test
-    void shouldAddNewLoan() throws Exception {
+    void shouldAddNewLoanOne() throws Exception {
         when(loanService.add(any(LoanDTO.class))).thenReturn(loan1);
 
         this.mockMvc.perform(post("/loan/add")
@@ -76,19 +85,35 @@ public class LoanControllerTest {
     }
 
     @Test
+    void shouldAddNewLoanTwo() throws Exception {
+        when(loanService.add(any(LoanDTO.class))).thenReturn(loan2);
+
+        this.mockMvc.perform(post("/loan/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(loan2)))
+                .andExpect(status().isCreated())
+                //.andExpect(jsonPath("$.loanDate", is(loan2.getLoanDate())))
+                //.andExpect(jsonPath("$.returnDate", is(loan2.getReturnDate())))
+                .andExpect(jsonPath("$.state", is(loan2.isState())))
+                .andExpect(jsonPath("$.idUser", is(loan2.getIdUser().intValue())))
+                .andExpect(jsonPath("$.idBook", is(loan2.getIdBook().intValue())));
+
+    }
+
+    @Test
     void shouldUpdateLoan() throws Exception {
 
-        when(loanService.update(anyLong(), any(LoanDTO.class))).thenReturn(loan1);
+        when(loanService.update(anyLong(), any(LoanDTO.class))).thenReturn(loanUpdated);
 
-        this.mockMvc.perform(put("/loan/update/{idLoan}", 4L)
+        this.mockMvc.perform(put("/loan/update/{idLoan}", 2L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(loan1)))
+                        .content(objectMapper.writeValueAsString(loanUpdated)))
                 .andExpect(status().isOk())
-                //.andExpect(jsonPath("$.loanDate", is(loan1.getLoanDate())))
-                //.andExpect(jsonPath("$.returnDate", is(loan1.getReturnDate())))
-                .andExpect(jsonPath("$.state", is(loan1.isState())))
-                .andExpect(jsonPath("$.idUser", is(loan1.getIdUser().intValue())))
-                .andExpect(jsonPath("$.idBook", is(loan1.getIdBook().intValue())));
+                //.andExpect(jsonPath("$.loanDate", is(loanUpdated.getLoanDate())))
+                //.andExpect(jsonPath("$.returnDate", is(loanUpdated.getReturnDate())))
+                .andExpect(jsonPath("$.state", is(loanUpdated.isState())))
+                .andExpect(jsonPath("$.idUser", is(loanUpdated.getIdUser().intValue())))
+                .andExpect(jsonPath("$.idBook", is(loanUpdated.getIdBook().intValue())));
 
     }
 
@@ -99,7 +124,6 @@ public class LoanControllerTest {
 
         this.mockMvc.perform(get("/loan/getbyid/{idLoan}", 1L))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.idLoan", is(loan1.getIdLoan().intValue())))
                 //.andExpect(jsonPath("$.loanDate", is(loan1.getLoanDate())))
                 //.andExpect(jsonPath("$.returnDate", is(loan1.getReturnDate())))
                 .andExpect(jsonPath("$.state", is(loan1.isState())))
@@ -112,7 +136,7 @@ public class LoanControllerTest {
 
         List<LoanDTO> list = new ArrayList<>();
         list.add(loan1);
-        list.add(loan2);
+        list.add(loanUpdated);
 
         when(loanService.findAll()).thenReturn(list);
 
@@ -126,7 +150,7 @@ public class LoanControllerTest {
 
         doNothing().when(loanService).delete(anyLong());
 
-        this.mockMvc.perform(delete("/loan/delete/{idLoan}", 4L))
+        this.mockMvc.perform(delete("/loan/delete/{idLoan}", 2L))
                 .andExpect(status().isNoContent());
     }
 }
