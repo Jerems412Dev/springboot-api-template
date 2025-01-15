@@ -15,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,9 +43,10 @@ public class BookControllerTest {
     private BookDTO book2;
     private BookDTO book2Updated;
     private BookDTO bookUpdatedAvailable;
+    private LoanDTO loan1;
 
     @BeforeEach
-    void init() {
+    void init() throws ParseException {
         book1 = new BookDTO();
         book1.setTitle("book 1");
         book1.setAuthor("Author book 1");
@@ -72,6 +75,13 @@ public class BookControllerTest {
         bookUpdatedAvailable.setAvailableCopies(15);
         bookUpdatedAvailable.setCountPages(218);
         bookUpdatedAvailable.setCategory(Categories.ROMAN);
+
+        loan1 = new LoanDTO();
+        loan1.setLoanDate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-01")); // actual Date
+        loan1.setReturnDate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-08")); // Return in 7 days
+        loan1.setState(true); // Example : active loan
+        loan1.setIdUser(1L);
+        loan1.setIdBook(1L);
     }
 
     @Test
@@ -162,12 +172,12 @@ public class BookControllerTest {
     void shouldFetchLoansByIdBookOne() throws Exception {
 
         List<LoanDTO> list = new ArrayList<>();
-
+        list.add(loan1);
 
         when(bookService.getLoans(anyLong())).thenReturn(list);
 
         this.mockMvc.perform(get("/book/getloans/{idBook}",1L))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(list.size())));
     }
 
