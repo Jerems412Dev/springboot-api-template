@@ -51,6 +51,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public LoanDTO update(Long idLoan, LoanDTO loanDTO) {
         logger.info("Updating loan with ID: {}", idLoan);
+        loanValidator.validateLoanDTO(loanDTO);
 
         Loan loan = loanRepository.findById(idLoan)
                 .orElseThrow(() -> {
