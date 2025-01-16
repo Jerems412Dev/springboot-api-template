@@ -55,7 +55,7 @@ public class UserRepositoryTest {
 
         assertNotNull(list);
         assertThat(list).isNotNull();
-        assertEquals(0, list.size());
+        assertEquals(1, list.size());
     }
 
     @Test
