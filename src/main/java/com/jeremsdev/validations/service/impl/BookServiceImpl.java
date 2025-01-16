@@ -52,6 +52,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDTO update(Long idBook, BookDTO bookDTO) {
         logger.info("Updating book with ID: {}", idBook);
+        bookValidator.validateBookDTO(bookDTO);
 
         Book book = bookRepository.findById(idBook)
                 .orElseThrow(() -> {

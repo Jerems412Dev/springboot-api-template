@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO update(Long idUser, UserDTO userDTO) {
         logger.info("Updating user with ID: {}", idUser);
+        userValidator.validateUserDTO(userDTO);
 
         User user = userRepository.findById(idUser)
                 .orElseThrow(()
