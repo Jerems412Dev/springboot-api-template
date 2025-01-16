@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jeremsdev.validations.dto.LoanDTO;
 import com.jeremsdev.validations.service.LoanService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class LoanControllerTest {
     private LoanDTO loanUpdated;
 
     @BeforeEach
-    void init() throws ParseException {
+    void setUp() throws ParseException {
         loan1 = new LoanDTO();
         loan1.setLoanDate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-01")); // actual Date
         loan1.setReturnDate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-08")); // Return in 7 days
@@ -69,6 +70,7 @@ public class LoanControllerTest {
     }
 
     @Test
+    @Order(1)
     void shouldAddNewLoanOne() throws Exception {
         when(loanService.add(any(LoanDTO.class))).thenReturn(loan1);
 
@@ -85,6 +87,7 @@ public class LoanControllerTest {
     }
 
     @Test
+    @Order(2)
     void shouldAddNewLoanTwo() throws Exception {
         when(loanService.add(any(LoanDTO.class))).thenReturn(loan2);
 
@@ -101,6 +104,7 @@ public class LoanControllerTest {
     }
 
     @Test
+    @Order(3)
     void shouldUpdateLoan() throws Exception {
 
         when(loanService.update(anyLong(), any(LoanDTO.class))).thenReturn(loanUpdated);
@@ -118,6 +122,7 @@ public class LoanControllerTest {
     }
 
     @Test
+    @Order(4)
     void shouldFetchOneLoanById() throws Exception {
 
         when(loanService.getById(anyLong())).thenReturn(loan1);
@@ -132,6 +137,7 @@ public class LoanControllerTest {
     }
 
     @Test
+    @Order(5)
     void shouldFetchAllLoans() throws Exception {
 
         List<LoanDTO> list = new ArrayList<>();
@@ -146,6 +152,7 @@ public class LoanControllerTest {
     }
 
     @Test
+    @Order(6)
     void shouldDeleteLoan() throws Exception {
 
         doNothing().when(loanService).delete(anyLong());

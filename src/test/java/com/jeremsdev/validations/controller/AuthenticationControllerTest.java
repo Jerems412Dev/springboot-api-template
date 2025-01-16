@@ -6,6 +6,7 @@ import com.jeremsdev.validations.auth.AuthenticationResponse;
 import com.jeremsdev.validations.auth.AuthenticationService;
 import com.jeremsdev.validations.auth.RegisterRequest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class AuthenticationControllerTest {
 
 
     @BeforeEach
-    void init() {
+    void setUp() {
 
         authRequest = new AuthenticationRequest();
         authRequest.setEmail("user1@example.com");
@@ -59,6 +60,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @Order(1)
     void shouldUserRegisterOne() throws Exception {
         when(authenticationService.register(any(RegisterRequest.class))).thenReturn(authenticationResponse);
 
@@ -69,6 +71,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @Order(2)
     void shouldUserRegisterTwo() throws Exception {
         when(authenticationService.register(any(RegisterRequest.class))).thenReturn(authenticationResponse);
 
@@ -79,6 +82,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @Order(3)
     void shouldUserAuthenticate() throws Exception {
         when(authenticationService.authenticate(any(AuthenticationRequest.class))).thenReturn(authenticationResponse);
 

@@ -6,6 +6,7 @@ import com.jeremsdev.validations.dto.BookDTO;
 import com.jeremsdev.validations.model.Categories;
 import com.jeremsdev.validations.service.BookService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class BookControllerTest {
     private LoanDTO loan1;
 
     @BeforeEach
-    void init() throws ParseException {
+    void setUp() throws ParseException {
         book1 = new BookDTO();
         book1.setTitle("book 1");
         book1.setAuthor("Author book 1");
@@ -85,6 +86,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(1)
     void shouldAddNewBookOne() throws Exception {
         when(bookService.add(any(BookDTO.class))).thenReturn(book1);
 
@@ -100,6 +102,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(2)
     void shouldAddNewBookTwo() throws Exception {
         when(bookService.add(any(BookDTO.class))).thenReturn(book2);
 
@@ -115,6 +118,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(3)
     void shouldUpdateBook() throws Exception {
 
         when(bookService.update(anyLong(), any(BookDTO.class))).thenReturn(book2Updated);
@@ -132,6 +136,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(4)
     void shouldFetchOneBookById() throws Exception {
 
         when(bookService.getById(anyLong())).thenReturn(book1);
@@ -146,6 +151,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(5)
     void shouldFetchAllBooks() throws Exception {
 
         List<BookDTO> list = new ArrayList<>();
@@ -160,6 +166,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(6)
     void shouldDeleteBookTwo() throws Exception {
 
         doNothing().when(bookService).delete(anyLong());
@@ -169,6 +176,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(7)
     void shouldFetchLoansByIdBookOne() throws Exception {
 
         List<LoanDTO> list = new ArrayList<>();
@@ -182,6 +190,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(8)
     void shouldUpdateAvailableCopiesBookOne() throws Exception {
 
         when(bookService.updateAvailableCopies(anyInt(),anyLong())).thenReturn(bookUpdatedAvailable);

@@ -20,6 +20,7 @@ import com.jeremsdev.validations.dto.LoanDTO;
 import com.jeremsdev.validations.dto.UserDTO;
 import com.jeremsdev.validations.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class UserControllerTest {
     private LoanDTO loan2;
 
     @BeforeEach
-    void init() throws ParseException {
+    void setUp() throws ParseException {
         user1 = new UserDTO();
         user1.setName("user1");
         user1.setEmail("user1@example.com");
@@ -75,6 +76,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(1)
     void shouldUpdateUserTwo() throws Exception {
 
         when(userService.update(anyLong(), any(UserDTO.class))).thenReturn(user2);
@@ -89,6 +91,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(2)
     void shouldFetchUserByIdUserOne() throws Exception {
 
         when(userService.getById(anyLong())).thenReturn(user1);
@@ -101,6 +104,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(3)
     void shouldFetchAllUsers() throws Exception {
 
         List<UserDTO> list = new ArrayList<>();
@@ -115,6 +119,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(4)
     void shouldDeleteUser() throws Exception {
 
         doNothing().when(userService).delete(anyLong());
@@ -124,6 +129,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(5)
     void shouldFetchLoansByIdUser() throws Exception {
 
         List<LoanDTO> list = new ArrayList<>();
