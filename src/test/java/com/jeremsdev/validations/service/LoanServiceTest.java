@@ -38,8 +38,6 @@ import static org.mockito.Mockito.times;
 @ActiveProfiles("test")
 @AutoConfigureMockMvc(addFilters = false) // Disabled Filter
 public class LoanServiceTest {
-    @Autowired
-    private MockMvc mockMvc;
     @InjectMocks
     private LoanServiceImpl loanService;
     @Mock

@@ -38,8 +38,6 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 @AutoConfigureMockMvc(addFilters = false) // Disabled Filter
 public class BookServiceTest {
-    @Autowired
-    private MockMvc mockMvc;
     @InjectMocks
     private BookServiceImpl bookService;
     @Mock
