@@ -30,10 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class LoanRepositoryTest {
     @Autowired
     private LoanRepository loanRepository;
-    @Autowired
-    private BookRepository bookRepository;
-    @Autowired
-    private UserRepository userRepository;
     private Loan loan;
     private Book book;
     private User user;
@@ -55,10 +51,11 @@ public class LoanRepositoryTest {
         book.setCountPages(218);
 
         loan = new Loan();
-        loan.setIdLoan(1L);
         loan.setLoanDate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-01")); // actual Date
         loan.setReturnDate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-08")); // Return in 7 days
         loan.setState(true); // Example : active loan
+        loan.setBook(book);
+        loan.setUser(user);
     }
 
     @Test
@@ -66,10 +63,6 @@ public class LoanRepositoryTest {
     @Order(1)
     @Rollback(value = false)
     void save() {
-        Book newBook = bookRepository.save(book);
-        User newUser = userRepository.save(user);
-        loan.setBook(newBook);
-        loan.setUser(newUser);
         Loan newLoan = loanRepository.save(loan);
         assertNotNull(newLoan);
         assertThat(newLoan.getIdLoan()).isNotEqualTo(null);
@@ -96,7 +89,7 @@ public class LoanRepositoryTest {
         Loan newLoan = loanRepository.findById(1L).get();
 
         assertNotNull(newLoan);
-        assertEquals(loan.getIdLoan(), newLoan.getIdLoan());
+        assertEquals(1L, newLoan.getIdLoan());
     }
 
     @Test
@@ -108,7 +101,7 @@ public class LoanRepositoryTest {
         loanFind.setReturnDate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-18"));
         Loan loanUpdated =  loanRepository.save(loanFind);
 
-        assertThat(loanUpdated.getReturnDate()).isEqualTo(new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-18"));
+        assertThat(loanUpdated.getReturnDate().toString()).isEqualTo(new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-18").toString());
     }
 
     @Test
