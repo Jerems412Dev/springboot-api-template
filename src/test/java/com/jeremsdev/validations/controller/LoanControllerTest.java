@@ -78,8 +78,8 @@ public class LoanControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loan1)))
                 .andExpect(status().isCreated())
-                //.andExpect(jsonPath("$.loanDate", is(loan1.getLoanDate())))
-                //.andExpect(jsonPath("$.returnDate", is(loan1.getReturnDate())))
+                .andExpect(jsonPath("$.loanDate", is(loan1.getLoanDate())))
+                .andExpect(jsonPath("$.returnDate", is(loan1.getReturnDate())))
                 .andExpect(jsonPath("$.state", is(loan1.isState())))
                 .andExpect(jsonPath("$.idUser", is(loan1.getIdUser().intValue())))
                 .andExpect(jsonPath("$.idBook", is(loan1.getIdBook().intValue())));
