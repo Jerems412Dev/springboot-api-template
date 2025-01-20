@@ -14,4 +14,4 @@ this is a basic project designed to facilitate the start-up of a Spring Boot app
 
 ## Link
 
-Here's a [link]([https://ui.shadcn.com/docs/registry](https://github.com/Jerems412Dev/springboot-api-template/new/main?filename=README.md)) to the article that explains how to set up this API
+Here's a [link](https://github.com/Jerems412Dev/) to the article that explains how to set up this API
