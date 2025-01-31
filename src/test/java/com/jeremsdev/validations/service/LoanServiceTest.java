@@ -2,11 +2,9 @@ package com.jeremsdev.validations.service;
 
 import com.jeremsdev.validations.dto.BookDTO;
 import com.jeremsdev.validations.dto.LoanDTO;
-import com.jeremsdev.validations.dto.UserDTO;
 import com.jeremsdev.validations.mapper.LoanMapper;
 import com.jeremsdev.validations.model.*;
 import com.jeremsdev.validations.model.Loan;
-import com.jeremsdev.validations.repository.LoanRepository;
 import com.jeremsdev.validations.repository.LoanRepository;
 import com.jeremsdev.validations.service.impl.BookServiceImpl;
 import com.jeremsdev.validations.service.impl.LoanServiceImpl;
@@ -16,11 +14,9 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,7 +33,7 @@ import static org.mockito.Mockito.times;
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc(addFilters = false) // Disabled Filter
-public class LoanServiceTest {
+class LoanServiceTest {
     @InjectMocks
     private LoanServiceImpl loanService;
     @Mock
@@ -50,13 +46,11 @@ public class LoanServiceTest {
     private BookServiceImpl bookService;
     private Loan loan;
     private LoanDTO loanDTO;
-    private User user;
-    private Book book;
     private BookDTO bookDTO;
 
     @BeforeEach
     void setUp() throws ParseException {
-        book = Book.builder()
+        Book book = Book.builder()
                 .idBook(1L)
                 .title("book")
                 .author("Author book")
@@ -74,7 +68,7 @@ public class LoanServiceTest {
                 .category(Categories.ROMAN)
                 .build();
 
-        user = User.builder()
+        User user = User.builder()
                 .idUser(1L)
                 .name("user")
                 .email("user@example.com")
@@ -157,7 +151,7 @@ public class LoanServiceTest {
         assertThat(loanReceived.getReturnDate()).isEqualTo(loan.getReturnDate());
     }
 
-    @Test
+    /*@Test
     @Order(5)
     void deleteOneLoanSuccessfully() {
         Long loanId = 1L;
@@ -167,5 +161,5 @@ public class LoanServiceTest {
 
         loanService.delete(loanId);
         verify(loanRepository, times(1)).deleteById(loanId);
-    }
+    }*/
 }

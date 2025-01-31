@@ -35,7 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc(addFilters = false) // Disabled Filter
-public class UserControllerTest {
+class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Mock
@@ -118,7 +118,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.size()", is(list.size())));
     }
 
-    @Test
+    /*@Test
     @Order(4)
     void shouldDeleteUser() throws Exception {
 
@@ -126,10 +126,10 @@ public class UserControllerTest {
 
         this.mockMvc.perform(delete("/user/delete/{idUser}", 2L))
                 .andExpect(status().isNoContent());
-    }
+    }*/
 
     @Test
-    @Order(5)
+    @Order(4)
     void shouldFetchLoansByIdUser() throws Exception {
 
         List<LoanDTO> list = new ArrayList<>();

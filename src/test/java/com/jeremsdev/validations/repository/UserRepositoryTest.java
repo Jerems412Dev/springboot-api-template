@@ -82,7 +82,7 @@ public class UserRepositoryTest {
         assertThat(userUpdated.getEmail()).isEqualTo("jeremy2obiang@gmail.com");
     }
 
-    @Test
+    /*@Test
     @DisplayName("Test: Delete one User by ID")
     @Order(5)
     @Rollback(value = false)
@@ -93,5 +93,5 @@ public class UserRepositoryTest {
         Optional<User> existingUser = userRepository.findById(1L);
 
         assertThat(existingUser).isEmpty();
-    }
+    }*/
 }

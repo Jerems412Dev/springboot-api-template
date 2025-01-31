@@ -36,7 +36,7 @@ logging:
 application:
   security:
     jwt:
-      secret-key:
-      expiration:  # a day
+      secret-key:  # secret key
+      expiration:   # a day
       refresh-token:
-        expiration:  # 7 days
+        expiration:   # 7 days

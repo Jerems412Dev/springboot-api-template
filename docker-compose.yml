@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+  app:
+    image: springboot-template-api
+    volumes:
+      - /home/username/docker/springboot-template-api:/app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080" # Mapping local port 8080 to 8080 port of the container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/templatedb?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_container
+    ports:
+      - "3306:3306" # Mapping local port 3306 to 3306 port oh the container
+    environment:
+      MYSQL_DATABASE: templatedb
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: size=20m
+      device: /home/username/docker/mysql_data

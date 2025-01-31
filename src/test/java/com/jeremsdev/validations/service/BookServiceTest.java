@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,7 +35,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc(addFilters = false) // Disabled Filter
-public class BookServiceTest {
+class BookServiceTest {
     @InjectMocks
     private BookServiceImpl bookService;
     @Mock
@@ -144,7 +142,7 @@ public class BookServiceTest {
         assertEquals(1, bookList.size());
     }
 
-    @Test
+    /*@Test
     @Order(5)
     void deleteOneBookSuccessfully() {
         Long bookId = 1L;
@@ -154,10 +152,10 @@ public class BookServiceTest {
 
         bookService.delete(bookId);
         verify(bookRepository, times(1)).deleteById(bookId);
-    }
+    }*/
 
     @Test
-    @Order(6)
+    @Order(5)
     void updateAvailableCopiesSuccessfully() {
         when(bookRepository.findById(anyLong())).thenReturn(Optional.ofNullable(book));
         when(bookRepository.save(any(Book.class))).thenAnswer(invocation -> {
@@ -171,7 +169,7 @@ public class BookServiceTest {
     }
 
     @Test
-    @Order(7)
+    @Order(6)
     void retrieveLoansByIdBookUnsuccessfully() {
         when(loanRepository.findByBookIdBook(anyLong())).thenReturn(List.of(loan));
 

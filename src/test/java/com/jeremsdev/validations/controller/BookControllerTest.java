@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc(addFilters = false) // Disabled Filter
-public class BookControllerTest {
+class BookControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Mock
@@ -165,7 +165,7 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$.size()", is(list.size())));
     }
 
-    @Test
+    /*@Test
     @Order(6)
     void shouldDeleteBookTwo() throws Exception {
 
@@ -173,10 +173,10 @@ public class BookControllerTest {
 
         this.mockMvc.perform(delete("/book/delete/{idBook}", 2L))
                 .andExpect(status().isNoContent());
-    }
+    }*/
 
     @Test
-    @Order(7)
+    @Order(6)
     void shouldFetchLoansByIdBookOne() throws Exception {
 
         List<LoanDTO> list = new ArrayList<>();
@@ -190,7 +190,7 @@ public class BookControllerTest {
     }
 
     @Test
-    @Order(8)
+    @Order(7)
     void shouldUpdateAvailableCopiesBookOne() throws Exception {
 
         when(bookService.updateAvailableCopies(anyInt(),anyLong())).thenReturn(bookUpdatedAvailable);

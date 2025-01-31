@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,7 +35,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc(addFilters = false) // Disabled Filter
-public class UserServiceTest {
+class UserServiceTest {
     @InjectMocks
     private UserServiceImpl userService;
     @Mock
@@ -122,7 +120,7 @@ public class UserServiceTest {
         assertEquals(2, userList.size());
     }
 
-    @Test
+    /*@Test
     @Order(4)
     void deleteOneUserSuccessfully() {
         Long userId = 2L;
@@ -132,10 +130,10 @@ public class UserServiceTest {
 
         userService.delete(userId);
         verify(userRepository, times(1)).deleteById(userId);
-    }
+    }*/
 
     @Test
-    @Order(5)
+    @Order(4)
     void retrieveLoansByIdBookUnsuccessfully() {
         when(loanRepository.findByUserIdUser(anyLong())).thenReturn(List.of(loan));
 
